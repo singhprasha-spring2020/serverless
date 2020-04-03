@@ -1,4 +1,3 @@
- 
 # Python CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
@@ -6,9 +5,7 @@
 version: 2
 jobs:
   build:
-    branches:
-      only:
-        - master
+
     docker:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
@@ -23,9 +20,21 @@ jobs:
 
     steps:
       - checkout
-
+      
       - run:
           name: install dependencies
           command: |
             python3 -m venv venv
             . venv/bin/activate
+      - run:
+          name: install awscli
+          command: sudo pip install awscli
+
+      - run:
+          name: Zip Artifact
+          command: |
+            zip index.zip index.js
+      - run:
+          name: Update lambdaFunction code
+          command: |
+            aws lambda update-function-code --function-name EmailService --region us-east-1 --zip-file fileb://index.zip

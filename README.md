@@ -1,7 +1,7 @@
 ## Build Instructions
 
 
-## Deploy Instructions
+## Deploy Instruction
 
 ## Running Tests
 
