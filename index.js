@@ -10,9 +10,14 @@ exports.emailService = function(event, context, callback) {
   let messageJson = JSON.stringify(message);
 
   let messageDataJson = JSON.stringify(messageJson);
-  console.log("Test Message: " + messageJson);
-  // console.log("Test Link: " + messageDataJson.Response_Msg);
-  // console.log("Test Email: " + messageDataJson.Response_email);
+
+  let messageJson1 = JSON.parse(messageDataJson);
+  
+  
+  console.log("Test Message: " + messageJson1);
+
+  console.log("Test Link: " + messageDataJson1.Response_Msg);
+  console.log("Test Email: " + messageDataJson1.Response_email);
 
 
   // const Response = {
