@@ -7,9 +7,9 @@ aws.config.update({ region: "us-east-1" });
 exports.emailService = function(event, context, callback) { 
 
   let message = event.Records[0].Sns.Message;
-  let messageJson = JSON.parse(message);
+  let messageJson = JSON.stringify(message);
 
-  let messageDataJson = JSON.parse(messageJson);
+  let messageDataJson = JSON.stringify(messageJson);
 
   console.log("Test Link: " + messageDataJson.Response_Msg);
   console.log("Test Email: " + messageDataJson.Response_email);
