@@ -95,19 +95,15 @@ ddb.getItem(queryParams, (err, data) => {
       });
     } else {
 
-        let jsonData = JSON.stringify(data)
-        let parsedJson = JSON.parse(jsonData);
-
-          //if exists check if ttl > currentTime,
-      let curr = new Date().getTime();
+      let jsonData = JSON.stringify(data)
+      let parsedJson = JSON.parse(jsonData);
+      let currentDate = new Date().getTime();
       let ttl = Number(parsedJson.Item.ttl.N);
-      console.log(typeof curr + ' '+ curr);
+      console.log(typeof currentDate + ' '+ currentDate);
       console.log(typeof ttl+  ' '+ ttl);
 
-        // if ttl is greater than current time do nothing,
-      if (curr > ttl) {
-          // else send email
-          
+ 
+      if (currentDate > ttl) {
 
           ddb.putItem(putParams, (err, data) => {
         if (err) console.log(err);
