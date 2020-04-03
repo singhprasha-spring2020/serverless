@@ -10,7 +10,7 @@ exports.emailService = function(event, context, callback) {
   let messageJson = JSON.stringify(message);
 
   let messageDataJson = JSON.stringify(messageJson);
-
+  console.log("Test Message: " + messageJson.data);
   console.log("Test Link: " + messageDataJson.Response_Msg);
   console.log("Test Email: " + messageDataJson.Response_email);
 
