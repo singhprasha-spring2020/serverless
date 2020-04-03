@@ -1,4 +1,3 @@
-
 const aws = require("aws-sdk");
 var ddb = new aws.DynamoDB({ apiVersion: "2012-08-10" });
 var ses = new aws.SES();
@@ -7,17 +6,44 @@ aws.config.update({ region: "us-east-1" });
 exports.emailService = function(event, context, callback) { 
 
   let message = event.Records[0].Sns.Message;
-  let messageJson = JSON.stringify(message);
+  // let messageJson = JSON.stringify(message);
+ console.log(message);
+  // let messageDataJson = JSON.stringify(messageJson);
 
-  let messageDataJson = JSON.stringify(messageJson);
+  // let messageJson1 = JSON.parse(messageDataJson);
+  
 
-  let messageJson1 = JSON.parse(messageDataJson);
+  // let messageJson = message;
+  // let Body = messageJson.Body;
+   message = JSON.parse(message);
+   let messages = message.Messages[0].Body
+   let body = JSON.parse(messages)
+
+
   
   
-  console.log("Test Message: " + messageJson1);
+  
+  // console.log("Test Message: " + messageJson);
+  // console.log("stringify"+ JSON.stringify(messageJson))
+  // console.log("Body: " + Body);
+  
+  // console.log("body" + messageJson.Messages);
+  
 
-  console.log("Test Link: " + messageDataJson1.Response_Msg);
-  console.log("Test Email: " + messageDataJson1.Response_email);
+  console.log("Test Link: " + body.Response_Msg);
+  console.log("Test Email: " + body.Response_email);
+  
+  let urls = body.Response_Msg;
+  let emailBody = "Hi, \n Your following Bills are due \n\n";
+
+  
+  for(let i=0 ; i < urls.length; i++){
+    emailBody += urls[i].url;
+    emailBody += "\n ";
+  }
+  emailBody += "\n Thanks, \n "+process.env.DOMAIN_NAME;
+  
+  
 
 
   // const Response = {
@@ -34,7 +60,7 @@ exports.emailService = function(event, context, callback) {
     Destination: {
       /* required */
       ToAddresses: [
-        messageDataJson.Response_email
+        body.Response_email
         /* more items */
       ]
     },
@@ -43,7 +69,7 @@ exports.emailService = function(event, context, callback) {
       Body: {
         Text: {
           Charset: "UTF-8",
-          Data: messageDataJson.Response_Msg
+          Data: emailBody
         }
       },
       Subject: {
@@ -58,8 +84,7 @@ exports.emailService = function(event, context, callback) {
   let putParams = {
     TableName: "csye6225",
     Item: {
-      id: { S: messageDataJson.Response_email },
-      bills: { S: messageDataJson.data },
+      id: { S: body.Response_email },
       ttl: { N: expirationTime }
     }
   };
@@ -67,7 +92,7 @@ exports.emailService = function(event, context, callback) {
   let queryParams = {
     TableName: 'csye6225',
   Key: {
-    'id': {S: messageDataJson.Response_email}
+    'id': {S: body.Response_email}
   },
   };
 
