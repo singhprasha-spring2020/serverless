@@ -1,3 +1,5 @@
+console.log("prashant")
+
 const aws = require("aws-sdk");
 var ddb = new aws.DynamoDB({ apiVersion: "2012-08-10" });
 var ses = new aws.SES();
@@ -18,6 +20,7 @@ exports.emailService = function(event, context, callback) {
    message = JSON.parse(message);
    let messages = message.Messages[0].Body
    let body = JSON.parse(messages)
+
 
 
   
