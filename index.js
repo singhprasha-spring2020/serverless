@@ -55,7 +55,7 @@ exports.emailService = function(event, context, callback) {
   // };
 
   let currentTime = new Date().getTime();
-  let ttl = 1*60*1000; 
+  let ttl = 10*60*1000; 
 
   let expirationTime = (currentTime + ttl).toString();
 
